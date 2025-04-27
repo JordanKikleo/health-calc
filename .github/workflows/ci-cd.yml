@@ -1,0 +1,30 @@
+name: Build and Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to Azure Container Registry
+      run: |
+        echo "${{ secrets.ACR_PASSWORD }}" | docker login healthcalcacr123.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+
+    - name: Build and Push Docker image
+      run: |
+        docker build -t healthcalcacr123.azurecr.io/health-calc-image:latest .
+        docker push healthcalcacr123.azurecr.io/health-calc-image:latest
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'health-calculator-app' # Ton App Service Azure
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        images: 'healthcalcacr123.azurecr.io/health-calc-image:latest'
