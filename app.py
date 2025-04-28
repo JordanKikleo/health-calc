@@ -4,6 +4,16 @@ from health_utils import calculate_bmi, calculate_bmr
 app = Flask(__name__)
 
 
+@app.route("/")
+def index():
+    return "Welcome to the Health API!"
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "healthy"})
+
+
 @app.route("/bmi", methods=["POST"])
 def bmi():
     data = request.get_json()
