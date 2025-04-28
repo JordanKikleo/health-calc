@@ -25,17 +25,17 @@ jobs:
     - name: Run tests
       run: |
         make test
-    
-    - name: Build Docker image
+
+    - name: Build and Push Docker image
       run: |
         make build
-        echo "${{ secrets.ACR_PASSWORD }}" | docker login your-acr-name.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
-        docker tag health-calculator-service your-acr-name.azurecr.io/health-calc-image:latest
-        docker push your-acr-name.azurecr.io/health-calc-image:latest
+        echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_USERNAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+        docker build -t ${{ secrets.ACR_USERNAME }}.azurecr.io/health-calc-image:latest .
+        docker push ${{ secrets.ACR_USERNAME }}.azurecr.io/health-calc-image:latest
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'health-calculator-service'
+        app-name: 'health-calc-service'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         images: '${{ secrets.ACR_USERNAME }}.azurecr.io/health-calc-image:latest'
