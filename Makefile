@@ -4,13 +4,15 @@ init:
 	pip install -r requirements.txt
 
 run:
-	python app.py
+	PYTHONPATH=. python src/api/app.py
 
 test:
-	python -m unittest test.py
+	PYTHONPATH=. python -m unittest discover tests
 
 build:
 	docker build -t health-calculator-service .
 
 clean:
-	rm -rf __pycache__
+	rm -rf __pycache__ src/**/__pycache__ tests/__pycache__
+	find . -type d -name "__pycache__" -exec rm -r {} +
+	find . -type f -name "*.pyc" -delete

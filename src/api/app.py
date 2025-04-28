@@ -1,7 +1,18 @@
+"""
+API REST pour le calcul d'indicateurs de santé.
+
+Cette API fournit des endpoints pour calculer :
+- L'Indice de Masse Corporelle (IMC/BMI)
+- Le Métabolisme de Base (BMR)
+
+La documentation Swagger est disponible à la racine de l'API.
+"""
+
 from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
-from health_utils import calculate_bmi, calculate_bmr
+from src.utils.health_utils import calculate_bmi, calculate_bmr
 
+# Initialisation de l'application Flask
 app = Flask(__name__)
 api = Api(
     app,
@@ -32,18 +43,32 @@ bmr_model = api.model(
 
 @api.route("/health")
 class Health(Resource):
+    """Endpoint pour vérifier l'état de l'API."""
+
     def get(self):
-        """Vérifier l'état de l'API"""
+        """
+        Vérifie l'état de l'API.
+
+        Returns:
+            dict: Statut de l'API
+        """
         return {"status": "healthy"}
 
 
 @api.route("/bmi")
 class BMI(Resource):
+    """Endpoint pour le calcul de l'IMC."""
+
     @api.expect(bmi_model)
     @api.response(200, "Succès")
     @api.response(400, "Données invalides")
     def post(self):
-        """Calculer l'IMC (BMI)"""
+        """
+        Calcule l'Indice de Masse Corporelle (IMC).
+
+        Returns:
+            dict: Valeur de l'IMC ou message d'erreur
+        """
         try:
             data = request.get_json()
             height = data.get("height")
@@ -63,11 +88,18 @@ class BMI(Resource):
 
 @api.route("/bmr")
 class BMR(Resource):
+    """Endpoint pour le calcul du BMR."""
+
     @api.expect(bmr_model)
     @api.response(200, "Succès")
     @api.response(400, "Données invalides")
     def post(self):
-        """Calculer le métabolisme de base (BMR)"""
+        """
+        Calcule le Métabolisme de Base (BMR).
+
+        Returns:
+            dict: Valeur du BMR ou message d'erreur
+        """
         try:
             data = request.get_json()
             height = data.get("height")
