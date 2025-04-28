@@ -7,10 +7,10 @@ class TestHealthUtils(unittest.TestCase):
         self.assertAlmostEqual(calculate_bmi(1.75, 70), 22.86, places=2)
 
     def test_calculate_bmr_male(self):
-        self.assertAlmostEqual(calculate_bmr(175, 70, 25, "male"), 1724.85, places=2)
+        self.assertAlmostEqual(calculate_bmr(175, 70, 25, "male"), 1724.05, places=2)
 
     def test_calculate_bmr_female(self):
-        self.assertAlmostEqual(calculate_bmr(165, 60, 30, "female"), 1382.29, places=2)
+        self.assertAlmostEqual(calculate_bmr(165, 60, 30, "female"), 1383.68, places=2)
 
 
 if __name__ == "__main__":
