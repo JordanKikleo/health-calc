@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const bmiForm = document.getElementById('bmiForm');
     const bmrForm = document.getElementById('bmrForm');
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = '/api';
 
     // Gestion du calcul IMC
     bmiForm.addEventListener('submit', async function(e) {
