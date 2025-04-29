@@ -10,6 +10,7 @@ La documentation Swagger est disponible à /api
 
 from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
+from flasgger import Swagger, swag_from
 import os
 import sys
 
@@ -33,6 +34,38 @@ app = Flask(__name__,
            static_folder=static_dir,
            static_url_path='/static')
 
+# Configuration de Swagger
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": 'apispec',
+            "route": '/apispec.json',
+            "rule_filter": lambda rule: True,
+            "model_filter": lambda tag: True,
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    "swagger_ui": True,
+    "specs_route": "/api"
+}
+
+swagger_template = {
+    "swagger": "2.0",
+    "info": {
+        "title": "Health Calculator API",
+        "description": "API pour le calcul d'indicateurs de santé",
+        "version": "1.0.0"
+    },
+    "basePath": "/",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"]
+}
+
+swagger = Swagger(app, config=swagger_config, template=swagger_template)
+
+# Configuration CORS
 CORS(app)
 
 # Route pour l'interface utilisateur
@@ -49,12 +82,62 @@ def serve_static(filename):
 
 # Route pour vérifier l'état de l'API
 @app.route('/api/health')
+@swag_from({
+    'responses': {
+        200: {
+            'description': 'État de l\'API',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'status': {'type': 'string'}
+                }
+            }
+        }
+    }
+})
 def health():
     """Vérifie l'état de l'API."""
     return jsonify({"status": "healthy"})
 
 # Route pour le calcul de l'IMC
 @app.route('/api/bmi', methods=['POST'])
+@swag_from({
+    'parameters': [
+        {
+            'name': 'body',
+            'in': 'body',
+            'required': True,
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'height': {'type': 'number', 'description': 'Taille en mètres'},
+                    'weight': {'type': 'number', 'description': 'Poids en kilogrammes'}
+                },
+                'required': ['height', 'weight']
+            }
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'IMC calculé',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'bmi': {'type': 'number'}
+                }
+            }
+        },
+        400: {
+            'description': 'Erreur de validation',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'error': {'type': 'string'}
+                }
+            }
+        }
+    }
+})
 def bmi():
     """Calcule l'Indice de Masse Corporelle (IMC)."""
     try:
@@ -75,6 +158,45 @@ def bmi():
 
 # Route pour le calcul du BMR
 @app.route('/api/bmr', methods=['POST'])
+@swag_from({
+    'parameters': [
+        {
+            'name': 'body',
+            'in': 'body',
+            'required': True,
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'height': {'type': 'number', 'description': 'Taille en mètres'},
+                    'weight': {'type': 'number', 'description': 'Poids en kilogrammes'},
+                    'age': {'type': 'integer', 'description': 'Âge en années'},
+                    'gender': {'type': 'string', 'description': 'Genre (male/female)'}
+                },
+                'required': ['height', 'weight', 'age', 'gender']
+            }
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'BMR calculé',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'bmr': {'type': 'number'}
+                }
+            }
+        },
+        400: {
+            'description': 'Erreur de validation',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'error': {'type': 'string'}
+                }
+            }
+        }
+    }
+})
 def bmr():
     """Calcule le Métabolisme de Base (BMR)."""
     try:

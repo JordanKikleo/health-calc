@@ -7,6 +7,7 @@ Une API REST pour calculer l'IMC (BMI) et le métabolisme de base (BMR).
 - Calcul de l'IMC (BMI)
 - Calcul du métabolisme de base (BMR)
 - Interface utilisateur web
+- Documentation Swagger
 - Tests automatisés
 - Containerisation Docker
 - Pipeline CI/CD avec GitHub Actions
@@ -105,6 +106,19 @@ Ouvrez votre navigateur et accédez à :
 ```
 http://localhost:5000/
 ```
+
+### Documentation Swagger
+
+La documentation interactive de l'API est disponible à l'adresse :
+```
+http://localhost:5000/api
+```
+
+La documentation Swagger permet de :
+- Visualiser tous les endpoints disponibles
+- Tester les endpoints directement depuis l'interface
+- Voir les modèles de données attendus
+- Consulter les exemples de requêtes et réponses
 
 ### Endpoints API
 
