@@ -6,7 +6,7 @@ Une API REST pour calculer l'IMC (BMI) et le métabolisme de base (BMR).
 
 - Calcul de l'IMC (BMI)
 - Calcul du métabolisme de base (BMR)
-- Documentation Swagger intégrée
+- Interface utilisateur web
 - Tests automatisés
 - Containerisation Docker
 - Pipeline CI/CD avec GitHub Actions
@@ -68,10 +68,10 @@ pip list
 ```
 
 Vous devriez voir les packages suivants installés :
-- Flask==2.0.1
-- Flask-restx==0.5.1
-- pytest==6.2.5
+- Flask==2.3.2
+- Flask-cors==4.0.0
 - Werkzeug==2.3.4
+- pytest==7.3.1
 
 ### Installation avec Docker
 
@@ -99,25 +99,30 @@ make run
 docker run -p 5000:5000 health-calculator-service
 ```
 
-### Accéder à la documentation Swagger
+### Accéder à l'interface utilisateur
 
 Ouvrez votre navigateur et accédez à :
 ```
 http://localhost:5000/
 ```
 
-### Endpoints
+### Endpoints API
+
+#### Vérifier l'état de l'API
+```bash
+curl http://localhost:5000/api/health
+```
 
 #### Calcul de l'IMC (BMI)
 ```bash
-curl -X POST http://localhost:5000/bmi \
+curl -X POST http://localhost:5000/api/bmi \
   -H "Content-Type: application/json" \
   -d '{"height": 1.75, "weight": 70}'
 ```
 
 #### Calcul du BMR
 ```bash
-curl -X POST http://localhost:5000/bmr \
+curl -X POST http://localhost:5000/api/bmr \
   -H "Content-Type: application/json" \
   -d '{"height": 175, "weight": 70, "age": 30, "gender": "male"}'
 ```
@@ -140,12 +145,23 @@ make test
 ### Structure du projet
 ```
 .
-├── app.py              # Application principale
-├── health_utils.py     # Fonctions de calcul
-├── test.py            # Tests unitaires
-├── Dockerfile         # Configuration Docker
-├── Makefile          # Commandes d'automatisation
-└── requirements.txt   # Dépendances Python
+├── src/
+│   ├── api/
+│   │   └── app.py              # Application principale
+│   ├── utils/
+│   │   └── health_utils.py     # Fonctions de calcul
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css       # Styles CSS
+│   │   └── js/
+│   │       └── script.js       # JavaScript
+│   └── templates/
+│       └── index.html          # Template HTML
+├── tests/
+│   └── test.py                 # Tests unitaires
+├── Dockerfile                  # Configuration Docker
+├── Makefile                    # Commandes d'automatisation
+└── requirements.txt            # Dépendances Python
 ```
 
 ### Commandes Make disponibles

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Santé</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Calculateur de Santé</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <ul class="nav nav-pills nav-fill" id="calculatorTabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#bmiTab">Calculateur d'IMC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#bmrTab">Calculateur de BMR</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <!-- Calculateur IMC -->
+            <div class="tab-pane fade show active" id="bmiTab">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Calculateur d'IMC (Indice de Masse Corporelle)</h2>
+                        <form id="bmiForm" class="mt-4">
+                            <div class="mb-3">
+                                <label for="bmiHeight" class="form-label">Taille (m)</label>
+                                <input type="number" class="form-control" id="bmiHeight" step="0.01" placeholder="Ex: 1.75" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bmiWeight" class="form-label">Poids (kg)</label>
+                                <input type="number" class="form-control" id="bmiWeight" step="0.1" placeholder="Ex: 70" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculer IMC</button>
+                        </form>
+                        <div id="bmiResult" class="mt-4 result-box d-none">
+                            <h3>Résultat :</h3>
+                            <p class="result-value"></p>
+                            <p class="result-interpretation"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculateur BMR -->
+            <div class="tab-pane fade" id="bmrTab">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Calculateur de BMR (Métabolisme de Base)</h2>
+                        <form id="bmrForm" class="mt-4">
+                            <div class="mb-3">
+                                <label for="bmrHeight" class="form-label">Taille (cm)</label>
+                                <input type="number" class="form-control" id="bmrHeight" step="1" placeholder="Ex: 175" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bmrWeight" class="form-label">Poids (kg)</label>
+                                <input type="number" class="form-control" id="bmrWeight" step="0.1" placeholder="Ex: 70" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bmrAge" class="form-label">Âge (années)</label>
+                                <input type="number" class="form-control" id="bmrAge" placeholder="Ex: 30" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bmrGender" class="form-label">Genre</label>
+                                <select class="form-select" id="bmrGender" required>
+                                    <option value="">Sélectionnez</option>
+                                    <option value="male">Homme</option>
+                                    <option value="female">Femme</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Calculer BMR</button>
+                        </form>
+                        <div id="bmrResult" class="mt-4 result-box d-none">
+                            <h3>Résultat :</h3>
+                            <p class="result-value"></p>
+                            <p class="result-interpretation"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html> 

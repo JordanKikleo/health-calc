@@ -4,10 +4,10 @@ init:
 	pip install -r requirements.txt
 
 run:
-	PYTHONPATH=. python src/api/app.py
+	PYTHONPATH=$(PWD) python src/api/app.py
 
 test:
-	PYTHONPATH=. python -m unittest discover tests
+	PYTHONPATH=$(PWD) python -m unittest discover tests
 
 build:
 	docker build -t health-calculator-service .
